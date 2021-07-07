@@ -9,7 +9,12 @@ position = input("Where do you want to put the treasure? ")
 
 #Write your code below this row 👇
 
+column = int(position[0]) -1
+row = int(position[1]) -1
 
+map[row][column] = "💎"
+
+print(f"The column is {column} and row is {row}")
 
 
 
