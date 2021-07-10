@@ -2,6 +2,9 @@
 def prime_checker(number):
    # Divide every number which is less than that number
    is_prime = True
+   """ Easier method
+   for i in range (2, number)
+   """
    for i in range(number + 1):
        if 1 < i < number:
             if number % i == 0:
