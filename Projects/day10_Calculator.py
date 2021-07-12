@@ -28,13 +28,16 @@ def divide(a, b):
 # Dictionary of operations and their function names
 operators = {"+" : add,
             "-" : subtract,
-            "*" : multiply,
+            "x" : multiply,
             "/" : divide}
 
 # Get numbers and operation
 def get_numbers_and_operation():
     """Gets the number input and operator to use, first number then operation and last number"""
     first_number = float(input("What's the first number?: "))
+
+    #NOTE Split here so the function can run with more than one operation
+    
     for symbol in operators:
         print(symbol)
     operation = input("Pick an operation: ")
