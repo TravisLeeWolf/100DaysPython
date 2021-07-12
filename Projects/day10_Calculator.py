@@ -1,5 +1,4 @@
 import day10_CalculatorArt
-
 # Functions
 
 # Add
@@ -26,31 +25,36 @@ def divide(a, b):
         print("Can't divide by 0!")
 
 # Dictionary of operations and their function names
-operators = {"+" : add,
+operators = {
+            "+" : add,
             "-" : subtract,
             "x" : multiply,
-            "/" : divide}
+            "/" : divide
+            }
 
-# Get numbers and operation
-def get_numbers_and_operation():
-    """Gets the number input and operator to use, first number then operation and last number"""
-    first_number = float(input("What's the first number?: "))
-
-    #NOTE Split here so the function can run with more than one operation
-    
-    for symbol in operators:
-        print(symbol)
-    operation = input("Pick an operation: ")
-    last_number = float(input("What's the next number?: "))
-    
-    # Perform calculation
-    answer = operators[operation](first_number, last_number)
-    
-    return f"{first_number} {operation} {last_number} = {answer}"
-
-
-# Start here
 print(day10_CalculatorArt.logo)
 
-# First run
-print(get_numbers_and_operation())
+def calculator():
+    # Get numbers and operation
+    first_number = float(input("What's the first number?: ")) 
+    for symbol in operators:
+        print(symbol)
+
+    continue_calculation = True
+
+    while continue_calculation == True:
+        operation = input("Pick an operation: ")
+        second_number = float(input("What's the next number?: "))
+                
+        # Perform first calculation
+        answer = operators[operation](first_number, second_number)
+        print(f"{first_number} {operation} {second_number} = {answer}")
+
+        keep_going = input(f"Type 'y' to continue calculating with {answer}, or type 'n' to start a new calculation: ")
+        if keep_going == "y":
+            first_number = answer
+        else:
+            continue_calculation = False
+            calculator()
+
+calculator()
