@@ -31,6 +31,7 @@ dealers_hand = []
 def pick_a_card(whos_hand):
     """Takes the player or dealer's hand list and adds a card to their hand."""
     whos_hand.append(cards[random.randint(0, len(cards) -1)])
+    # NOTE - you can use choice()
 
 # Counts the current score of the persons hand
 def count_score(persons_hand):
@@ -39,6 +40,7 @@ def count_score(persons_hand):
     for card_value in persons_hand:
         score += card_value
     return score
+    # NOTE - you can use sum()
 
 def display_table():
     """Prints out the players hand and score as well as the dealer's first card."""
@@ -47,11 +49,6 @@ def display_table():
     print(f" 🤖 Dealer's first card: {dealers_hand[0]}")
 
 # NOTE - Sets up the game
-# Select 2 cards for player
-for _ in range(2):
-    pick_a_card(players_hand)
-    pick_a_card(dealers_hand)
-display_table()
 
 # The dealer does not hit until all players have either busted, stayed or received blackjack.
 def dealers_play():
@@ -81,19 +78,31 @@ def declare_winner():
         print("You lose. 😭")
 
 # Ask player to hit (take another card)
-while count_score(players_hand) < 22:
-    another_card = input("Type 'y' to get another card, type 'n' to pass: ")
-    if another_card == "y":
+def take_another_card():
+    while count_score(players_hand) < 22:
+        another_card = input("Type 'y' to get another card, type 'n' to pass: ")
+        if another_card == "y":
+            pick_a_card(players_hand)
+            display_table()
+        elif another_card == "n":
+            display_table()
+            dealers_play()
+            declare_winner()
+            break
+
+# Select 2 cards for player
+def new_game():
+    for _ in range(2):
         pick_a_card(players_hand)
-        display_table()
-    elif another_card == "n":
-        display_table()
-        dealers_play()
-        declare_winner()
-        break
+        pick_a_card(dealers_hand)
+    display_table()
+    take_another_card()
+
+new_game()
 
 # Ask if the player wants to play again
 keep_playing = True
+print()
 play_again = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
 while keep_playing == True:
     if play_again == "y":
@@ -101,6 +110,6 @@ while keep_playing == True:
         players_hand = []
         dealers_hand = []
         # Play game again
-        break
+        new_game()
     else:
         keep_playing = False
