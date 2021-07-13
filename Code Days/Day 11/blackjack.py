@@ -42,9 +42,9 @@ def count_score(persons_hand):
 
 def display_table():
     """Prints out the players hand and score as well as the dealer's first card."""
-    print(f"Your cards: {players_hand}, current score: {count_score(players_hand)}")
+    print(f" 🤠 Your cards: {players_hand}, current score: {count_score(players_hand)}")
     # Select 2 cards for dealer, only one card is shown
-    print(f"Dealer's first card: {dealers_hand[0]}")
+    print(f" 🤖 Dealer's first card: {dealers_hand[0]}")
 
 # NOTE - Sets up the game
 # Select 2 cards for player
@@ -59,6 +59,27 @@ def dealers_play():
     while count_score(dealers_hand) < 17:
         pick_a_card(dealers_hand)
 
+def final_results():
+    print(f" 🤠 Your final hand {players_hand}, final score: {count_score(players_hand)}")
+    print(f" 🤖 Dealer's final hand {dealers_hand}, final score: {count_score(dealers_hand)}")
+
+# If either is over 21 the other wins
+# If both player and dealer are below 21, evaluate which is closest to 21
+def declare_winner():
+    players_score = count_score(players_hand)
+    dealers_score = count_score(dealers_hand)
+    final_results()
+    if players_score > 21:
+        print("You went over. You lose 😭")
+    elif dealers_score > 21:
+        print("Dealer went over. You win! 🤑")
+    elif players_score == dealers_score:
+        print("It's a draw 😑")
+    elif players_score > dealers_score:
+        print("You win! 🤑")
+    else:
+        print("You lose. 😭")
+
 # Ask player to hit (take another card)
 while count_score(players_hand) < 22:
     another_card = input("Type 'y' to get another card, type 'n' to pass: ")
@@ -68,26 +89,8 @@ while count_score(players_hand) < 22:
     elif another_card == "n":
         display_table()
         dealers_play()
+        declare_winner()
         break
-
-def final_results():
-    print(f"Your final hand {players_hand}, final score: {count_score(players_hand)}")
-    print(f"Dealer's final hand {dealers_hand}, final score: {count_score(dealers_hand)}")
-
-final_results()
-
-# If either is over 21 the other wins
-# If both player and dealer are below 21, evaluate which is closest to 21
-if count_score(players_hand) > 21:
-    print("You went over. You lose 😭")
-elif count_score(dealers_hand) > 21:
-    print("Dealer went over. You win! 🤑")
-elif count_score(players_hand) == count_score(dealers_hand):
-    print("It's a draw 😑")
-elif count_score(players_hand) > count_score(dealers_hand):
-    print("You win! 🤑")
-else:
-    print("You lose. 😭")
 
 # Ask if the player wants to play again
 keep_playing = True
