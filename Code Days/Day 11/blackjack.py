@@ -32,6 +32,10 @@ def pick_a_card(whos_hand):
     """Takes the player or dealer's hand list and adds a card to their hand."""
     whos_hand.append(cards[random.randint(0, len(cards) -1)])
     # NOTE - you can use choice()
+    if sum(whos_hand) > 21 and 11 in whos_hand:
+        whos_hand.remove(11)
+        whos_hand.append(1)
+        
 
 # Counts the current score of the persons hand
 def count_score(persons_hand):
@@ -42,13 +46,19 @@ def count_score(persons_hand):
     return score
     # NOTE - you can use sum()
 
+def check_for_blackjack():
+    if count_score(players_hand) == 21:
+        print("BLACKJACK!")
+        declare_winner()
+    elif count_score(dealers_hand) == 21:
+        print("Dealer got blackjack!")
+        declare_winner()
+
 def display_table():
     """Prints out the players hand and score as well as the dealer's first card."""
     print(f" 🤠 Your cards: {players_hand}, current score: {count_score(players_hand)}")
     # Select 2 cards for dealer, only one card is shown
     print(f" 🤖 Dealer's first card: {dealers_hand[0]}")
-
-# NOTE - Sets up the game
 
 # The dealer does not hit until all players have either busted, stayed or received blackjack.
 def dealers_play():
@@ -96,20 +106,20 @@ def new_game():
         pick_a_card(players_hand)
         pick_a_card(dealers_hand)
     display_table()
+    check_for_blackjack()
     take_another_card()
 
-new_game()
 
 # Ask if the player wants to play again
 keep_playing = True
-print()
-play_again = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
 while keep_playing == True:
+    play_again = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
     if play_again == "y":
         # Clear the player and dealers hands
         players_hand = []
         dealers_hand = []
         # Play game again
+        print()
         new_game()
     else:
         keep_playing = False
