@@ -1,4 +1,4 @@
-year = input("Which year do you want to check?")
+year = int(input("Which year do you want to check? ")) #NOTE: int() added to input
 
 if year % 4 == 0:
   if year % 100 == 0:
