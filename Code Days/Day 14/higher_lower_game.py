@@ -12,6 +12,7 @@ if you get one answer wrong the game ends.
 from game_data import data
 import art
 import random
+from os import system
 
 # NOTE: Structure of data, list of dictionaries, length of list is 50 (index 49)
 # data[int]['key']
@@ -29,6 +30,12 @@ import random
 # Set up a list for current items
 CURRENT_OPTIONS = []
 CHOICES_LIST = []
+SCORE = 0
+
+# Clear screen to for next options to guess
+def screen_clear():
+    """Clears the screen."""
+    system('cls')
 
 # Get length of data and make list of the index, this list will be where you remove items already guessed
 def set_options_list():
@@ -54,7 +61,8 @@ def get_option_followers(data_num):
 # TODO: Once chosen, remove from chosen list
 def remove_from_list(data_num):
     """Take the list, number of the option chosen and removes it from the list."""
-    CHOICES_LIST.remove(data_num)
+    if data_num in CHOICES_LIST:
+        CHOICES_LIST.remove(data_num)
 
 # TODO: Get input for player option choice
 # Should work for upper/lower case
@@ -87,7 +95,11 @@ def compare_to_choice(choiceA_num, choiceB_num):
 
 def pick_random_item():
     """Picks a random item in CHOICES_LIST and returns the number."""
-    choice = random.choice(CHOICES_LIST)
+    if len(CHOICES_LIST) > 0:
+        choice = random.choice(CHOICES_LIST)
+        remove_from_list(choice)
+    else:
+        print("No more options to chose from.")
     return choice
 
 # Choose an item from the choice list and display it
@@ -97,19 +109,38 @@ def display_option(choice_num):
     option_description = f"{name}, a {desc}, from {country}."
     return option_description
 
-
-# TODO: If correct, move option B up to A and select a new option B
+def show_options_get_choice():
+    option_a = display_option(CURRENT_OPTIONS[0])
+    option_b = display_option(CURRENT_OPTIONS[1])
+    screen_clear()
+    print(art.logo)
+    if SCORE > 0:
+        print(f"You're right! Current score: {SCORE}")
+    print("Compare A: " + option_a)
+    print(art.vs)
+    print("Against B: " + option_b)
+    check_options_assign_new()
 
 # TODO: If incorrect, display final score and end game
+def end_game():
+    screen_clear()
+    print(f"Sorry, that's wrong. Final score: {SCORE}")
+
+# TODO: If correct, move option B up to A and select a new option B
+def check_options_assign_new():
+    if compare_to_choice(CURRENT_OPTIONS[0], CURRENT_OPTIONS[1]):
+        CURRENT_OPTIONS[0] = CURRENT_OPTIONS[1]
+        CURRENT_OPTIONS[1] = pick_random_item()
+        # Add 1 to score
+        global SCORE
+        SCORE += 1
+        # Start next guess with new choices
+        show_options_get_choice()
+    else:
+        end_game()
 
 # TODO: Start the game with two choices, remove them from the choice list.
 set_options_list()
 for i in range(2):
     CURRENT_OPTIONS.append(pick_random_item())
-option_a = display_option(CURRENT_OPTIONS[0])
-option_b = display_option(CURRENT_OPTIONS[1])
-print(art.logo)
-print("Compare A: " + option_a)
-print(art.vs)
-print("Against B: " + option_b)
-get_player_choice()
+show_options_get_choice()
