@@ -26,6 +26,17 @@ import random
 # Layout A - Compare A: name, job , origin
 # Layout B - Against B: name, job, origin
 
+# Set up a list for current items
+CURRENT_OPTIONS = []
+
+# Get length of data and make list of the index, this list will be where you remove items already guessed
+def options_list():
+    "This function can only be run once per game, sets up a list of index from the length of data to be destructable as game progresses."
+    choose_from = []
+    for i in range(0, len(data)):
+        choose_from.append(i)
+    return choose_from
+
 # Get a random option
 # choice = random.randint(0, 49)
 def get_option_details(data_num):
@@ -48,26 +59,26 @@ def get_player_choice():
     """Gets and returns the players choice between A or B."""
     player_choice = input("Who has more followers? Type 'A' or 'B': ").lower()
     if player_choice == "a":
-        return "a"
+        return True
     elif player_choice == "b":
-        return "b"
+        return False
     else:
         print("Invalid choice! Please try again.")
         get_player_choice()
 
 # TODO: Compare both options, find which is higher
-optionA = random.randint(0, 49)
-optionB = random.randint(0, 49)
-if get_option_followers(optionA) > get_option_followers(optionB):
-    print("Option A is higher")
-    print(get_option_details(optionA), get_option_details(optionB))
-elif get_option_followers(optionA) < get_option_followers(optionB):
-    print("Option B is higher")
-    print(get_option_details(optionA), get_option_details(optionB))
-else:
-    print("It's the same.")
-    print(get_option_details(optionA), get_option_details(optionB))
+def A_higher(choiceA_num, choiceB_num):
+    if get_option_followers(choiceA_num) > get_option_followers(choiceB_num):
+        return True
+    elif get_option_followers(choiceA_num) < get_option_followers(choiceB_num):
+        return False
+
 # TODO: Compare higher option against player choice
+def compare_to_choice(choiceA_num, choiceB_num):
+    if get_player_choice() == A_higher(choiceA_num, choiceB_num):
+        return True
+    else:
+        return False
 
 # TODO: If correct, move option B up to A and select a new option B
 
