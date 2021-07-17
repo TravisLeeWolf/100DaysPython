@@ -110,6 +110,7 @@ def display_option(choice_num):
     return option_description
 
 def show_options_get_choice():
+    """Displays the options and asks the user for a guess."""
     option_a = display_option(CURRENT_OPTIONS[0])
     option_b = display_option(CURRENT_OPTIONS[1])
     screen_clear()
@@ -123,11 +124,13 @@ def show_options_get_choice():
 
 # TODO: If incorrect, display final score and end game
 def end_game():
+    """If user gets the answer wrong, end the game."""
     screen_clear()
     print(f"Sorry, that's wrong. Final score: {SCORE}")
 
 # TODO: If correct, move option B up to A and select a new option B
 def check_options_assign_new():
+    """Checks if the guess is correct, if True then keep going, else end the game."""
     if compare_to_choice(CURRENT_OPTIONS[0], CURRENT_OPTIONS[1]):
         CURRENT_OPTIONS[0] = CURRENT_OPTIONS[1]
         CURRENT_OPTIONS[1] = pick_random_item()
