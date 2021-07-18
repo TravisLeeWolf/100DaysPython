@@ -7,6 +7,8 @@ Program requirements
 4. Check if the transaction was successful
 5. Make coffee
 """
+# NOTE: 
+
 WATER = resources["water"]
 MILK = resources["milk"]
 COFFEE = resources["coffee"]
@@ -27,9 +29,7 @@ def report():
 def get_order():
     """Gets order from the customer and returns that order."""
     order = input("What would you like? (espresso/latte/cappuccino): ")
-    if order == "report":
-        print(report())
-    elif order not in ["espresso", "latte", "cappuccino"]:
+    if order not in ["espresso", "latte", "cappuccino", "report"]:
         print("This machine doesn't offer that, sorry.")
     else:
         return order
@@ -37,14 +37,17 @@ def get_order():
 # Check if resources are sufficient
 def check_resources(order):
     """Checks if there are enough resources in machine, returns True if there is and False if not."""
-    drink = resources[order]["ingredients"]
-    if order == "espresso":
-        if WATER < drink["water"] or COFFEE < drink["coffee"]:
-            return False
+    if order == "report":
+        return True
     else:
-        if WATER < drink["water"] or MILK < drink["milk"] or COFFEE < drink["coffee"]:
-            return False
-    return True
+        drink = menu[order]["ingredients"]
+        if order == "espresso":
+            if WATER < drink["water"] or COFFEE < drink["coffee"]:
+                return False
+        else:
+            if WATER < drink["water"] or MILK < drink["milk"] or COFFEE < drink["coffee"]:
+                return False
+        return True
 
 def get_money():
     """Gets payment from customer and returns the amount of money they put in."""
@@ -56,22 +59,48 @@ def get_money():
     money_in = pennies + nickels + dimes + quaters
     return money_in
 
+def reduce_resources(order):
+    global WATER, MILK, COFFEE
+    drink_resources = menu[order]["ingredients"]
+    if order == "espresso":
+        WATER -= drink_resources["water"]
+        COFFEE -= drink_resources["coffee"]
+    else:
+        WATER -= drink_resources["water"]
+        MILK -= drink_resources["milk"]
+        COFFEE -= drink_resources["coffee"]
+
 
 # Process
 def process_payment(order, resources_available):
     """Takes the order and if there are resources available, if resources are available then processes order and returns change."""
     if resources_available:
-        drink_cost = resources[order]["cost"]
+        drink_cost = menu[order]["cost"]
         print(f"The cost for a {order} is ${drink_cost: .2f}.")
         payment = get_money()
         if drink_cost < payment:
+            global MONEY
             MONEY += drink_cost
             change = payment - drink_cost
+            reduce_resources(order)
             return change
         else:
-            print("Not enough coins, sorry.")
+            print("Not enough coins.")
             return False
     else:
-        print("Not enough ingredients, sorry.")
+        print("Not enough ingredients.")
         return False
 
+customer_order = get_order()
+while check_resources(customer_order):
+    if customer_order == "report":
+        print(report())
+    else:
+        customer_change =  process_payment(customer_order, check_resources(customer_order))
+        if customer_change == False:
+            print("Sorry for the inconvenience.")
+        else:
+            print(f"Here is ${customer_change: .2f} in change.")
+            print(f"Here is your {customer_order} ☕, enjoy!")
+    customer_order = get_order()
+print("Sorry, the machine is out of ingredients.")
