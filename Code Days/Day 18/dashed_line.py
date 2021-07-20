@@ -8,9 +8,12 @@ import turtle as t
 my_turtle = t.Turtle()
 
 # Write method to create a 100x100 square
-for _ in range(4):
-    my_turtle.forward(100)
-    my_turtle.right(90)
+for _ in range(15):
+    my_turtle.pendown()
+    my_turtle.forward(20)
+    my_turtle.penup()
+    my_turtle.forward(20)
+
 
 my_screen = t.Screen()
 my_screen.exitonclick()
