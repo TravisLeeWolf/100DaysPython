@@ -18,7 +18,7 @@ def random_color():
     color = (r, g, b)
     return color
 
-for _ in range(32):
+for _ in range(64):
     color_list.append(random_color())
 
 """

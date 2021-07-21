@@ -3,6 +3,10 @@ import random
 
 tim = t.Turtle()
 t.colormode(255)
+
+screen = t.Screen()
+screen.bgcolor("gray10")
+
 def random_color():
     r = random.randint(155, 255)
     g = random.randint(155, 255)
@@ -30,6 +34,4 @@ def draw_spirograph(degrees):
 
 draw_spirograph(5)
 
-screen = t.Screen()
-screen.bgcolor("gray10")
 screen.exitonclick()
