@@ -39,6 +39,7 @@ screen.bgcolor("gray10")
 y_position = -250
 tim.penup()
 tim.setposition(-250, y_position)
+tim.hideturtle()
 
 for _ in range(11):
     for _ in range(11):
@@ -48,7 +49,6 @@ for _ in range(11):
         tim.forward(50)
     y_position += 50
     tim.setposition(-250, y_position)
-tim.hideturtle()
     
 
 # Display the drawing
