@@ -2,7 +2,7 @@
 
 # Imports
 import turtle as t  # Turtle Graphics
-import colorgram # Gets a color pallete from an image
+#import colorgram # Gets a color pallete from an image
 import random # Random module
 
 # Get color pallete
