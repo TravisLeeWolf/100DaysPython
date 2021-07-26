@@ -3,7 +3,9 @@
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from scoreboard import ScoreBoard
 import time
+
 
 # Setup the screen
 screen = Screen()
@@ -18,20 +20,22 @@ rightPaddle = Paddle((350, 0))
 leftPaddle = Paddle((-350, 0))
 # Setup ball
 ball = Ball()
+# Setup score board
+scoreboard = ScoreBoard()
 
 # Take keyboard inputs
 screen.listen()
 # Right paddle movement
-screen.onkey(rightPaddle.moveUp, "Up")
-screen.onkey(rightPaddle.moveDown, "Down")
+screen.onkeypress(rightPaddle.moveUp, "Up")
+screen.onkeypress(rightPaddle.moveDown, "Down")
 # Left paddle movement
-screen.onkey(leftPaddle.moveUp, "w")
-screen.onkey(leftPaddle.moveDown, "s")
+screen.onkeypress(leftPaddle.moveUp, "w")
+screen.onkeypress(leftPaddle.moveDown, "s")
 
 gameIsOn = True
 while gameIsOn:
     screen.update()
-    time.sleep(0.1)
+    time.sleep(ball.moveSpeed)
     ball.move()
 
     # Detect when the ball hits the top or bottom
@@ -41,6 +45,17 @@ while gameIsOn:
     # Detect when the ball this the paddle
     if ball.distance(rightPaddle) < 50 and ball.xcor() > 320 or ball.distance(leftPaddle) < 50 and ball.xcor() < - 320:
         ball.bounceX()
+
+    # Detect when right paddle misses
+    if ball.xcor() > 380:
+        ball.resetPosition()
+        scoreboard.leftGetsPoint()
+
+    # Detect when left paddle misses
+    if ball.xcor() < -380:
+        ball.resetPosition()
+        scoreboard.rightGetsPoint()
+
 
 # Exit game when screen is clicked, NOTE: Goes at the end
 screen.exitonclick()
