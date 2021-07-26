@@ -1,6 +1,7 @@
 from turtle import Turtle, penup, shape
 from random import randint
 
+
 class Food(Turtle):
     
     def __init__(self):
