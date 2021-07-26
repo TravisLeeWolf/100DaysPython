@@ -1,0 +1,18 @@
+Plan for making pong
+
+Components:
+Player paddle
+Computer paddle
+Ball
+Score board
+Game screen
+
+Operations:
+Create the screen
+Create and move a paddle
+Create another paddle (computer/player 2)
+Create the ball and make it move
+Detect collision with the wall and bounce
+Detect collision with paddle
+Detect when paddle misses
+Keep score
