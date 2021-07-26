@@ -1,7 +1,7 @@
 from turtle import Turtle, clearscreen
 
 ALIGNMENT = "center"
-FONT = ("Pokemon GB", 12, "normal")
+FONT = ("Pokemon GB", 14, "normal")
 
 class ScoreBoard(Turtle):
 
@@ -17,6 +17,10 @@ class ScoreBoard(Turtle):
 
     def displayScore(self):
         self.write(f"Score: {self.score}", align=ALIGNMENT, font=FONT)
+
+    def gameIsOver(self):
+        self.goto(0, 0)
+        self.write("GAME OVER", align=ALIGNMENT, font=FONT)
 
     def addToScore(self):
         self.score += 1
