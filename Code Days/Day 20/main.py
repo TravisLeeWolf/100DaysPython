@@ -1,7 +1,8 @@
 # Made by @TravisLeeWolf
 
-from turtle import Screen, Turtle
+from turtle import Screen
 from snake import Snake
+from food import Food
 import time
 
 # Setup the screen
@@ -14,6 +15,7 @@ screen.tracer(0)
 
 
 snake = Snake()
+food = Food()
 
 # Take keyboard inputs and get the snake to turn
 screen.listen()
@@ -29,6 +31,10 @@ while gameIsOn:
     time.sleep(0.1) # Decreasing the sleep time changes how quickly the snake moves
     
     snake.move()
+
+    # Detect collision with food
+    if snake.head.distance(food) < 15:
+        food.refresh()
     
 
 screen.exitonclick()
