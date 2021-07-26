@@ -19,12 +19,19 @@ class Snake:
 
     def createSnake(self):
         for position in STARTING_POSITIONS:
-            sectionOfSnake = Turtle("square")
-            sectionOfSnake.color("white")
-            sectionOfSnake.penup()
-            sectionOfSnake.goto(position)
+            self.addSectionToSnake(position)
+            
 
-            self.sections.append(sectionOfSnake)
+    def addSectionToSnake(self, position):
+        sectionOfSnake = Turtle("square")
+        sectionOfSnake.color("white")
+        sectionOfSnake.penup()
+        sectionOfSnake.goto(position)
+
+        self.sections.append(sectionOfSnake)
+
+    def extend(self):
+        self.addSectionToSnake(self.sections[-1].position())
 
     def move(self):
         for sectionNumber in range(len(self.sections) -1 , 0, -1):
