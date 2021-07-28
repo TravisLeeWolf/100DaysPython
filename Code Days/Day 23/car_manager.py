@@ -16,6 +16,7 @@ class CarManager(Turtle):
         self.penup()
         self.pickRandomBodyColor()
         self.startAtRandomYPosition()
+        self.carsSpeed = STARTING_MOVE_DISTANCE
 
     def pickRandomBodyColor(self):
         bodyColor = random.choice(COLORS)
@@ -25,6 +26,12 @@ class CarManager(Turtle):
         yPosition = random.randrange(-240, 240, 20)
         self.goto(300, yPosition)
 
+    def speedUpCar(self):
+        self.carsSpeed += MOVE_INCREMENT
+
     def moveForward(self):
-        self.forward(STARTING_MOVE_DISTANCE)
+        self.forward(self.carsSpeed)
+
+    def hidePreviousCars(self):
+        self.hideturtle()
 
