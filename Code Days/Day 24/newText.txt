@@ -1,0 +1,1 @@
+In the write mode if the file doesn't exist a new file will be created.
