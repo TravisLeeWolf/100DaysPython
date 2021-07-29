@@ -13,4 +13,5 @@ class StatesWriter(Turtle):
         self.goto(x=xPosition, y=yPosition)
 
     def writeStateName(self, stateName):
-        self.write(stateName, font=FONT)
+        dotAndName = "👇" + stateName
+        self.write(dotAndName, font=FONT)
