@@ -1,5 +1,6 @@
 import turtle
 import pandas
+from statesWriter import StatesWriter
 
 screen = turtle.Screen()
 screen.title("U.S. States Game")
@@ -7,20 +8,29 @@ screen.title("U.S. States Game")
 # Adding the image to turtle
 image = "blank_states_img.gif"
 screen.addshape(image)
-
 turtle.shape(image)
 
-# Get guess, make sure to convert to title case
-answerState = screen.textinput(title="Guess the State", prompt="What's another state name?").title()
+# Load in csv data
+data = pandas.read_csv("50_states.csv")
 
-stateData = pandas.read_csv("50_states.csv")
+# Instance in writer
+writer = StatesWriter()
+
+# Get user guess and conver to title case
+guess = screen.textinput(title="Guess the State", prompt="What's another state name?")
+guess = guess.title()
+
 # Check if guess is among the 50 states
-guessState = stateData[stateData.state == answerState]
-if guessState.empty:
+matchedToGuess = data[data.state == guess]
+if matchedToGuess.empty:
     print("Try again")
 else:
     # Write correct guess onto the map
-    print(guessState)
+    name = matchedToGuess.state.item()
+    x = matchedToGuess.x.item()
+    y = matchedToGuess.y.item()
+    writer.goToState(xPosition=x, yPosition=y)
+    writer.writeStateName(stateName=name)
 
 # Use a loop to allow user to keep guessing
 # Record the correct guesses in a list
