@@ -3,10 +3,12 @@ import tkinter
 window = tkinter.Tk()
 window.title("Labels & Buttons")
 window.minsize(width=640, height=480)
+window.config(padx=100, pady=100) # Padding for the enitre window
 
 # Label
 myLabel = tkinter.Label(text="I'm a label.", font=("Arial", 24))
 myLabel.grid(column=0, row=0)
+myLabel.config(padx=50, pady=50) # Padding for an element
 
 # Button
 def buttonClicked():
