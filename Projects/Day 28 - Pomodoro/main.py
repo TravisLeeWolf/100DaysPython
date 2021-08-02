@@ -39,8 +39,8 @@ startButton.grid(column=0, row=2)
 resetButton = Button(text="Reset", font=(FONT_NAME, 15))
 resetButton.grid(column=2, row=2)
 
-# 25 min completed label ⏱🍅
-pomoDoneLabel = Label(text="[⏱]", font=(FONT_NAME, 20, "bold",), bg=YELLOW )
+# 25 min completed label ⏱✔
+pomoDoneLabel = Label(text="[✔]", font=(FONT_NAME, 20, "bold",), fg=GREEN, bg=YELLOW )
 pomoDoneLabel.grid(column=1, row=3)
 
 
