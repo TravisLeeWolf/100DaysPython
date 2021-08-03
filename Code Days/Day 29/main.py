@@ -1,25 +1,27 @@
 from tkinter import *
 from tkinter.messagebox import askokcancel, showwarning
 from random import randint, choice, shuffle
+import pyperclip
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
-#Password Generator Project
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+# Editied from Password Generator Project
+def generatePassword():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-passwordLetterList = [choice(letters) for _ in range(randint(8, 10))]
-passwordSymbolList = [choice(symbols) for _ in range(randint(2, 4))]
-passwordNumberList = [choice(numbers) for _ in range(randint(2, 4))]
+    passwordLetterList = [choice(letters) for _ in range(randint(8, 10))]
+    passwordSymbolList = [choice(symbols) for _ in range(randint(2, 4))]
+    passwordNumberList = [choice(numbers) for _ in range(randint(2, 4))]
 
-passwordList = passwordLetterList + passwordSymbolList + passwordNumberList
+    passwordList = passwordLetterList + passwordSymbolList + passwordNumberList
 
-shuffle(passwordList)
+    shuffle(passwordList)
 
-password = ""
-for char in passwordList:
-  password += char
+    password = "".join(passwordList)
 
-print(f"Your password is: {password}")
+    passwordInput.delete(0, END)
+    passwordInput.insert(0, password)
+    pyperclip.copy(password)
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
@@ -77,7 +79,7 @@ passwordInput = Entry(window, width=27, show="*")
 passwordInput.grid(column=1, row=3, sticky="w")
 
 # Generate Password button grid[2,3]
-generatePasswordButton = Button(text="Generate Password", fg="white", bg="darkred")
+generatePasswordButton = Button(text="Generate Password", fg="white", bg="darkred", command=generatePassword)
 generatePasswordButton.grid(column=2, row=3, sticky="w")
 
 # Add button grid[1,4] colspan 2 width 36
