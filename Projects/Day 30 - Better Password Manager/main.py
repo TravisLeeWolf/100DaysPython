@@ -53,6 +53,25 @@ def save():
             websiteInput.delete(0, END)
             passwordInput.delete(0, END)
 
+
+# ------------------------- SEARCH FUNCTION ---------------------------- #
+def find_password():
+    try:
+        with open("data.json", mode="r") as dataFile:
+            data = json.load(dataFile) 
+    except FileNotFoundError:
+        print("There are no entries, please save an entry first.")
+    else:
+        try:
+            websiteToSearch = websiteInput.get()
+            resultEntry = data[websiteToSearch]
+            print(resultEntry)
+        except KeyError:
+            askokcancel(title="Not Found", message=f"{websiteToSearch} does not exist in the database.")
+        else:
+            askokcancel(title="Search Result", message=f"Details for {websiteToSearch}:\nEmail: {resultEntry['email']}\nPassword: {resultEntry['password']}")
+    finally:
+        websiteInput.delete(0, END)
 # ---------------------------- UI SETUP ------------------------------- #
 # Grid layout col-3 row-5
 # Setting up the window
@@ -76,7 +95,7 @@ websiteInput.grid(column=1, row=1, sticky="w")
 websiteInput.focus()
 
 # Search button grid[1,2]
-searchButton = Button(text="Search", fg="white", bg="darkred", width=15)
+searchButton = Button(text="Search", fg="white", bg="darkred", width=15, command=find_password)
 searchButton.grid(column=2, row=1, sticky="w")
 
 # Email/Username label grid[0,2]
