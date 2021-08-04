@@ -39,14 +39,19 @@ def save():
     if websiteText == "" or passwordText == "":
         showwarning(title="Missing Fields!", message="Please enter in all fields.")
     else:
-        # okayToSave = askokcancel(title="Add Entry", message=f"Website: {websiteText}\nEmail: {emailUsernameText}\nPassword: {passwordText}\nDo you want to add this entry?")
-        # if okayToSave:
-        # with open("password_manager_data.txt", mode="a") as dataFile:
-        #   dataFile.write(f"{websiteText} | {emailUsernameText} | {passwordText}\n")
-        with open("data.json", mode="w") as dataFile:
-            json.dump(newDataEntry, dataFile, indent=4)
-        websiteInput.delete(0, END)
-        passwordInput.delete(0, END)
+        try:
+            with open("data.json", mode="r") as dataFile:
+                data = json.load(dataFile)
+                data.update(newDataEntry)
+        except FileNotFoundError:
+            with open("data.json", mode="w") as dataFile:
+                json.dump(newDataEntry, dataFile, indent=4)
+        else:
+            with open("data.json", mode="w") as dataFile:
+                json.dump(data, dataFile, indent=4)
+        finally:
+            websiteInput.delete(0, END)
+            passwordInput.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 # Grid layout col-3 row-5
@@ -66,9 +71,13 @@ websiteLabel = Label(text="Website: ", fg="white", bg="black")
 websiteLabel.grid(column=0, row=1)
 
 # Website input grid[1,1] colspan 2 width 35
-websiteInput = Entry(width=52)
-websiteInput.grid(column=1, row=1, columnspan=2, sticky="w")
+websiteInput = Entry(width=32)
+websiteInput.grid(column=1, row=1, sticky="w")
 websiteInput.focus()
+
+# Search button grid[1,2]
+searchButton = Button(text="Search", fg="white", bg="darkred", width=15)
+searchButton.grid(column=2, row=1, sticky="w")
 
 # Email/Username label grid[0,2]
 emailUsernameLabel = Label(text="Email/Username: ", fg="white", bg="black")
@@ -84,11 +93,11 @@ passwordLabel = Label(text="Password: ", fg="white", bg="black")
 passwordLabel.grid(column=0, row=3)
 
 # Password input grid[1,3] width 21
-passwordInput = Entry(window, width=27, show="*")
+passwordInput = Entry(window, width=32, show="*")
 passwordInput.grid(column=1, row=3, sticky="w")
 
 # Generate Password button grid[2,3]
-generatePasswordButton = Button(text="Generate Password", fg="white", bg="darkred", command=generatePassword)
+generatePasswordButton = Button(text="Generate Password", fg="white", bg="darkred", width=15, command=generatePassword)
 generatePasswordButton.grid(column=2, row=3, sticky="w")
 
 # Add button grid[1,4] colspan 2 width 36
