@@ -9,29 +9,63 @@ from random import choice
 BACKGROUND_COLOR = "#B1DDC6"
 CARD_BACK_COLOR = "#91C2AF"
 
+# Globals
+chosenWord = {}
+wordsToLearn = []
 
-# --- Switch to English --- #
-def flipCardToEnglish(currentWord):
-    cardCanvas.itemconfig(cardImage, image=cardBack)
-    languageOfCard.config(text="English", bg=CARD_BACK_COLOR)
-    wordOfCard.config(text=currentWord["English"], bg=CARD_BACK_COLOR)
 
-    
-
-# --- Create New Flash Card --- #
 wordDataDF = pandas.read_csv(".\data\\french_words.csv")
 wordDictionaryList = wordDataDF.to_dict(orient="records")
+
+
+# --- Check which data file to use --- #
+# If words_to_learn.cv exists, use that file, else start from here
+def loadDataToUse():
+    global wordsToLearn
+    try:
+        savedData = pandas.read_csv(".\data\words_to_learn.csv")
+    except FileNotFoundError:
+        wordsToLearn = wordDictionaryList
+    else:
+        wordsToLearn = savedData.to_dict(orient="records")
+
+
+# --- Switch to English --- #
+def flipCardToEnglish():
+    global chosenWord
+    cardCanvas.itemconfig(cardImage, image=cardBack)
+    languageOfCard.config(text="English", bg=CARD_BACK_COLOR, fg="white")
+    wordOfCard.config(text=chosenWord["English"], bg=CARD_BACK_COLOR, fg="white")   
+
+
+# --- Create New Flash Card --- #
 def createNewFlashCard():
+    global chosenWord, cardTimer
+    window.after_cancel(cardTimer)
     cardCanvas.itemconfig(cardImage, image=cardFront)
-    chosenWord = choice(wordDictionaryList)
-    languageOfCard.config(text="French", bg="white")
-    wordOfCard.config(text=chosenWord["French"], bg="white")
-    window.after(3000, flipCardToEnglish, chosenWord)
+    chosenWord = choice(wordsToLearn)
+    languageOfCard.config(text="French", bg="white", fg="black")
+    wordOfCard.config(text=chosenWord["French"], bg="white", fg="black")
+    cardTimer = window.after(3000, flipCardToEnglish)
+
+# --- Save current list of remaining words to learn --- #
+def saveToWordsToLearn():
+    listAsDF = pandas.DataFrame(wordsToLearn)
+    listAsDF.to_csv(".\data\words_to_learn.csv", index=False)
+
+# --- Remove learnt word from words_to_learn.csv --- #
+def removeFromLearningList():
+    wordsToLearn.remove(chosenWord)
+    saveToWordsToLearn()
+    createNewFlashCard()
+
 
 # --- UI --- #
 window =Tk()
 window.title("Flashy")
 window.config(padx=50, pady=50, bg=BACKGROUND_COLOR)
+
+cardTimer = window.after(3000, flipCardToEnglish) # NOTE: Find a way to implement this better, needs to exist or createNewFlashCard with throw an error
 
 # UI is broken up into a 2 X 2 grid
 ## Adding the flash card image
@@ -56,10 +90,11 @@ wrongGuessButton.grid(column=0, row=1)
 
 ## Tick button if guess was right
 rightImage = PhotoImage(file=".\images\\right.png")
-rightGuessButton = Button(image=rightImage, bg=BACKGROUND_COLOR, highlightthickness=0, relief=FLAT, command=createNewFlashCard)
+rightGuessButton = Button(image=rightImage, bg=BACKGROUND_COLOR, highlightthickness=0, relief=FLAT, command=removeFromLearningList)
 rightGuessButton.grid(column=1, row=1)
 
 # Starting function calls
+loadDataToUse()
 createNewFlashCard()
 
 # Keeps the window open
