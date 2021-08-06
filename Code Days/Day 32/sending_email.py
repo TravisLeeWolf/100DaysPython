@@ -1,4 +1,4 @@
-from email import message
+
 import smtplib
 
 myEmail = "testSender@gmail.com"
