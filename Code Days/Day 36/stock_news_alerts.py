@@ -4,14 +4,14 @@ from newsapi import NewsApiClient
 STOCK_NAME = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
-
+NewsList = []
 
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 
 alphaParams = {
     "function": "TIME_SERIES_DAILY",
-    "symbol": "TSLA",
+    "symbol": STOCK_NAME,
     "apikey": ALPHA_API
 }
 
