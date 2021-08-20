@@ -46,5 +46,21 @@ pixelConfig = {
     "quantity": "1"
 }
 
-response = requests.post(url=pixelEndpoint, json=pixelConfig, headers=headers)
+# response = requests.post(url=pixelEndpoint, json=pixelConfig, headers=headers)
+# print(response.text)
+
+# Updating a pixel entry
+# /v1/users/<username>/graphs/<graphID>/<yyyyMMdd>
+pixelToUpdateEndpoint = f"{pixelEndpoint}/20210819"
+
+pixelUpdateData = {
+    "quantity": "5"
+}
+
+# response = requests.put(url=pixelToUpdateEndpoint, json=pixelUpdateData, headers=headers)
+# print(response.text)
+
+# Deleting a pixel entry
+pixelToDeleteEndpoint = pixelToUpdateEndpoint
+response = requests.delete(url=pixelToDeleteEndpoint, headers=headers)
 print(response.text)
