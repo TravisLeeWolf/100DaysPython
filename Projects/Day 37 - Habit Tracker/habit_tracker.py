@@ -1,5 +1,5 @@
 import requests
-
+from datetime import datetime
 
 USERNAME = "leewolftest2"
 
@@ -39,8 +39,10 @@ headers = {
 
 pixelEndpoint = f"{graphEndpoint}/{graphConfig['id']}"
 
+today = datetime.now()
+
 pixelConfig = {
-    "date": "20210820",
+    "date": today.strftime("%Y%m%d"),
     "quantity": "1"
 }
 
