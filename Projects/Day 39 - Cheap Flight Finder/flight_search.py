@@ -1,3 +1,4 @@
+from tkinter.constants import S
 import requests
 from datetime import datetime, timedelta
 
@@ -11,6 +12,7 @@ class FlightSearch:
             "apikey": API_KEY
         }
         self.cityCode = ""
+        self.flightData = ""
 
     def searchCity(self, cityName):
         cityEndpoint = f"{self.endpoint}/locations/query"
@@ -37,8 +39,12 @@ class FlightSearch:
             "curr": "GBP",
             "price_to": maxPrice,
             "max_stopovers": 0,
-            "limit": 3
+            "limit": 1
         }
         response = requests.get(flightsEndpoint, headers=self.header, params=query)
-        print(response.text)
+        self.flightData = response.json()
+        if self.flightData["_results"] > 0:
+            self.flightData = self.flightData["data"][0]
+        else:
+            self.flightData = ""
     
