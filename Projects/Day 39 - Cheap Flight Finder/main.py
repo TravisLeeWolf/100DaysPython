@@ -6,8 +6,10 @@ dataManager = DataManager()
 sheetData = dataManager.sheetData
 flightSearch = FlightSearch()
 
-for entry in sheetData:
-    if entry["iataCode"] == "":
-        flightSearch.searchCity(entry["city"])
-        cityCode = flightSearch.cityCode
-        dataManager.updateIataCode(entry["id"], cityCode)
+# for entry in sheetData:
+#     if entry["iataCode"] == "":
+#         flightSearch.searchCity(entry["city"])
+#         cityCode = flightSearch.cityCode
+#         dataManager.updateIataCode(entry["id"], cityCode)
+
+flightSearch.searchFlights("PAR", 300)
