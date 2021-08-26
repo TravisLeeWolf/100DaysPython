@@ -21,4 +21,5 @@ for entry in sheetData:
     flightData.sortFlightData(flightSearch.flightData)
 
 flightData.displayFlightList()
+emailSender.getFlightList(flightData.notificationFlightList)
 emailSender.sendMail()
