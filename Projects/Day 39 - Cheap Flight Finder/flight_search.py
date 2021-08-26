@@ -2,7 +2,7 @@ from tkinter.constants import S
 import requests
 from datetime import datetime, timedelta
 
-
+API_KEY ="API KEY"
 
 class FlightSearch:
     #This class is responsible for talking to the Flight Search API.

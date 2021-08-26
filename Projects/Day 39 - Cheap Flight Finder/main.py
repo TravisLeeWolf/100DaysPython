@@ -2,11 +2,13 @@
 from data_manager import DataManager
 from flight_search import FlightSearch
 from flight_data import FlightData
+from notification_manager import NotificationManager
 
 dataManager = DataManager()
 sheetData = dataManager.sheetData
 flightSearch = FlightSearch()
 flightData = FlightData()
+emailSender = NotificationManager()
 
 for entry in sheetData:
     if entry["iataCode"] == "":
@@ -19,3 +21,4 @@ for entry in sheetData:
     flightData.sortFlightData(flightSearch.flightData)
 
 flightData.displayFlightList()
+emailSender.sendMail()
