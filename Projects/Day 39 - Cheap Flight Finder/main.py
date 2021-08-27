@@ -16,9 +16,11 @@ for entry in sheetData:
         cityCode = flightSearch.cityCode
         dataManager.updateIataCode(entry["id"], cityCode)
 
+
 for entry in sheetData:
     flightSearch.searchFlights(destinationCode=entry["iataCode"], maxPrice=entry["lowestPrice"])
     flightData.sortFlightData(flightSearch.flightData)
+
 
 flightData.displayFlightList()
 emailSender.getFlightList(flightData.notificationFlightList)

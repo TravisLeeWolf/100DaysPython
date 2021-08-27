@@ -1,9 +1,9 @@
 import smtplib
 from datetime import datetime
 
-MY_EMAIL = "sender"
-PASSWORD = "pass"
-SEND_TO_EMAIL = "reciever"
+MY_EMAIL = "SENDER EMAIL"
+PASSWORD = "SENDER PASSWORD"
+SEND_TO_EMAIL = "RECIEVER EMAIL"
 
 
 class NotificationManager:
@@ -19,22 +19,23 @@ class NotificationManager:
     def composeEmail(self):
         for flight in self.flightList:
             # NOTE: Use string strip instead
-            boundForTime = datetime(flight[5]).strftime("%d - %m - %Y")
-            returnTime = datetime(flight[6]).strftime("%d - %m - %Y")
-            message = f"Only £{flight[0]} to fly from {flight[1]}-{flight[2]} to {flight[3]}-{flight[4]}, from {boundForTime} to {returnTime}."
+            dateTo = flight[5][:10]
+            dateFrom = flight[6][:10]
+            message = f"Only \u00A3{flight[0]} to fly from {flight[1]}-{flight[2]} to {flight[3]}-{flight[4]}, from {dateTo} to {dateFrom}."
             self.emailsToSend.append(message)
-            print(message)
 
     def sendMail(self):
         self.composeEmail()
+         
         try:
            with smtplib.SMTP("smtp.gmail.com") as connection:
                 connection.starttls()
                 connection.login(user=MY_EMAIL, password=PASSWORD)
                 for email in self.emailsToSend:
+                    message = (f"Subject:Low price alert!\n\n{email}").encode("utf-8")
                     connection.sendmail(from_addr=MY_EMAIL,
                                         to_addrs=SEND_TO_EMAIL,
-                                        msg=f"Subject:Low price alert!\n\n{email}") 
+                                        msg=message)
         except:
             print("Issue with sending email.")
         else:
