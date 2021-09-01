@@ -17,6 +17,12 @@ for tag in allAnchorTags:
 # mainHeading = soup.find(name="h1", id="name")
 # print(mainHeading)
 
-classIsHeading = soup.find(class_="heading") # NOTE: use class_ to avoid a conflict with Python class method
-print(classIsHeading.getText())
+# classIsHeading = soup.find(class_="heading") # NOTE: use class_ to avoid a conflict with Python class method
+# print(classIsHeading.getText())
+
+name = soup.select_one(selector="#name")
+print(name)
+
+headings = soup.select(selector=".heading")
+print(headings)
 
