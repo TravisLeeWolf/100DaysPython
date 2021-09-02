@@ -13,5 +13,4 @@ for article in articles:
 
 with open("movies.txt", mode="w") as myFile:
     for movie in movies:
-        movie = movie.encode("utf-8")
         myFile.write(f"{movie}\n")
