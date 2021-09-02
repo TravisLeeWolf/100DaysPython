@@ -1,9 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
-response = requests.get("https://www.empireonline.com/movies/features/best-movies-2/")
+response = requests.get("https://www.imdb.com/list/ls055592025/")
 response.raise_for_status()
 webSoup = BeautifulSoup(response.text, "html.parser")
 
-article = webSoup.find_all(class_="listicle-item-content")
-print(article[1].prettify())
+articles = webSoup.find_all(class_="lister-item-header")
+movies = []
+for article in articles:
+    text = article.find(name="a").get_text()
+    movies.append(text)
+
+with open("movies.txt", mode="w") as myFile:
+    for movie in movies:
+        movie = movie.encode("utf-8")
+        myFile.write(f"{movie}\n")
