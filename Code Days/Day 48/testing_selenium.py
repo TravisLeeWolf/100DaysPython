@@ -1,5 +1,7 @@
 from selenium import webdriver
 
+# NOTE: For current learning it's better to use Chrome Browser
+
 chromeDriverPath = "chromedriver.exe"
 braveBrowserPath = "brave.exe"
 
