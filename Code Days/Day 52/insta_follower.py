@@ -1,6 +1,7 @@
 from time import time
 from selenium import webdriver
 import time
+from selenium.webdriver.common.keys import Keys
 
 CHROME_DRIVER_PATH = "chromedriver.exe"
 INSTAGRAM_USERNAME = "USERNAME"
@@ -27,11 +28,21 @@ class InstaFollower:
         saveInfoButton = self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/div/div/div/button')
         saveInfoButton.click()
         time.sleep(2)
-        noNotificationsButton = self.driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[3]/button[2]')
-        noNotificationsButton.click()
+        # NOTE: Was working before but having an issue now
+        # noNotificationsButton = self.driver.find_element_by_xpath('/html/body/div[6]/div/div/div/div[3]/button[2]')
+        # noNotificationsButton.click()
 
-    def find_followers(self) -> None:
-        pass
+    def find_followers(self, account) -> None:
+        accountURL = f"{INSTAGRAM_URL}{account}"
+        self.driver.get(accountURL)
+        followingLink = self.driver.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[3]/a')
+        followingLink.click()
+        time.sleep(3)
+        # NOTE: figure out how to scroll to the end of following list
+        # listOfFollowers = self.driver.find_element_by_xpath('/html/body/div[6]/div/div/div[3]')
+        # listOfFollowers.send_keys(Keys.END)
     
     def follow(self) -> None:
-        pass
+        peopleToFollow = self.driver.find_elements_by_css_selector("button.sqdOP.L3NKy.y3zKF")
+        for person in peopleToFollow:
+            person.click()
