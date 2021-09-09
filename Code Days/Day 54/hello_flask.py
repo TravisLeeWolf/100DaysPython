@@ -14,3 +14,8 @@ def hello_world():
 ## flask run
 
 ## Ctrl + C (To close the server)
+
+# If you don't want to set up the environment above use this
+if __name__ == "__main__":
+    app.run()
+
