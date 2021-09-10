@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Blog</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+    <h3><a href="{{ url_for('aboutBlog') }}">Click here for about this blog.</a></h3>
+    {% for blogPost in posts: %}
+        <h1>{{ blogPost["title"] }}</h1>
+        <h2>{{ blogPost["subtitle"] }}</h2>
+    {% endfor %}
+</body>
+</html>
