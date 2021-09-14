@@ -14,15 +14,15 @@
     {% for blogPost in posts %}
     <div class="content">
         <div class="card">
-            <h2>{{ blogPost["title"] }}</h2>
-            <p class="text">{{ blogPost["subtitle"] }}</p>
-            <a href="{{ url_for('getPost', postID=blogPost['id']) }}">Read</a>
+            <h2>{{ blogPost.title }}</h2>
+            <p class="text">{{ blogPost.subtitle }}</p>
+            <a href="{{ url_for('showPost', index=blogPost.id) }}">Read</a>
         </div>
     </div>
     {% endfor %}
 </div>
 </body>
 <footer>
-    <p>Made with ♥️ in London.</p>
+    <p>Made with ♥️ in Japan.</p>
 </footer>
 </html>
