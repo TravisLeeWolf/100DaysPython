@@ -33,11 +33,13 @@ def showContact():
 
 @app.route('/sent', methods=["POST"])
 def sendMessage():
-    name = request.form["name"]
-    email = request.form["email"]
-    phone = request.form.get("phone")
-    message = request.form["message"]
-    return f"{name}, {email}, {phone}, {message}."
+    data = request.form
+    print(data["name"])
+    print(data["email"])
+    print(data["phone"])
+    print(data["message"])
+    return "<h1>Successfully sent your message</h1>"
 
 if __name__ == "__main__":
     app.run(debug=True)
+
