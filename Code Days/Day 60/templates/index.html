@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hello, world!</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="forms-and-flask" />
+</head>
+<body>
+    <h1>Hello, {{ name }}!</h1>
+    <br>
+    <form action="{‌{ url_for('recieveData') }}" method="POST">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" value="username"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" value="password"><br><br>
+        <input type="submit" value="Submit">
+      </form> 
+      
+      <p>Working on it.</p>
+</body>
+</html>
