@@ -3,8 +3,8 @@ import requests
 from post import Post
 import smtplib
 
-EMAIL_ADDRESS = ""
-EMAIL_PASSWORD = ""
+EMAIL_ADDRESS = "email"
+EMAIL_PASSWORD = "password"
 
 POSTS_URL = "https://api.npoint.io/88c2c1f644ef334058be"
 posts = requests.get(POSTS_URL).json()
