@@ -11,6 +11,7 @@ def home():
 @app.route("/login")
 def login():
     form = MyForm()
+    form.validate_on_submit()
     return render_template('login.html', form=form)
 
 
