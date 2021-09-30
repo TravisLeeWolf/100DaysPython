@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired, Length
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired
 
 class MyForm(FlaskForm):
     email = StringField('email', validators=[DataRequired()])
-    password = StringField('password', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
