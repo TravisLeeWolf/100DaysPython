@@ -1,28 +1,59 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, sessions, url_for
+# import sqlite3
+from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 
-all_books = [
-     {
-        "title": "Harry Potter",
-        "author": "J. K. Rowling",
-        "rating": 9,
-    },
-    {
-        "title": "Lord Of The Rings",
-        "author": "J. R. R. Tolkien",
-        "rating": 10,
-    }
-]
+# Creating database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///books-collection.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+## Create table
+class Book(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    author = db.Column(db.String(250), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+
+    #Optional: this will allow each book object to be identified by its title when printed.
+    def __repr__(self):
+        return f'<Book {self.title}>'
+    
+# db.create_all()
+
+## Adding an entry
+# new_book = Book(id=1, title="Harry Potter", author="J. K. Rowling", rating=9)
+# db.session.add(new_book)
+# db.session.commit()
+
+all_books = db.session.query(Book).all()
+
+# db = sqlite3.connect("books-collection.db")
+# cursor = db.cursor()
+# cursor.execute("CREATE TABLE books (id INTEGER PRIMARY KEY, title varchar(250) NOT NULL UNIQUE, author varchar(250) NOT NULL, rating INTEGER NOT NULL)")
+# cursor.execute("INSERT INTO books VALUES(1, 'Harry Potter', 'J. K. Rowling', '9.3')")
+# db.commit()
 
 @app.route('/')
 def home():
+    all_books = db.session.query(Book).all()
     return render_template('index.html', booklist=all_books)
 
 
-@app.route("/add")
+@app.route("/add", methods=["GET", "POST"])
 def add():
-    return render_template('add.html')
+    if request.method == "POST":
+        bookName = request.form["bookName"]
+        author = request.form["author"]
+        rating = int(request.form["rating"])
+        newBookEntry = Book(title=bookName, author=author, rating=rating)
+        db.session.add(newBookEntry)
+        db.session.commit()
+        return redirect(url_for("home"))
+    else:
+        return render_template('add.html')
 
 
 if __name__ == "__main__":
