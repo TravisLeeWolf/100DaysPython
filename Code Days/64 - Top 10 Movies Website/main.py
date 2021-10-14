@@ -10,6 +10,37 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap(app)
 
+# Creating our movie database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie-collection.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+# Create table
+class Moive(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String)
+    rating = db.Column(db.Float, nullable=False)
+    ranking = db.Column(db.Integer, nullable=False)
+    review = db.Column(db.String)
+    img_url = db.Column(db.String)
+
+    # Allows each movie object to be identified by its title when printed.
+    def __repr__(self):
+        return f'<Book {self.title}>'
+    
+# db.create_all() # This creates a new database, only needs to be run once
+
+# new_movie = newMovie(
+#     title="Phone Booth",
+#     year=2002,
+#     description="Publicist Stuart Shepard finds himself trapped in a phone booth, pinned down by an extortionist's sniper rifle. Unable to leave or receive outside help, Stuart's negotiation with the caller leads to a jaw-dropping climax.",
+#     rating=7.3,
+#     ranking=10,
+#     review="My favourite character was the caller.",
+#     img_url="https://image.tmdb.org/t/p/w500/tjrX2oWRCM3Tvarz38zlZM7Uc10.jpg"
+# )
 
 @app.route("/")
 def home():
