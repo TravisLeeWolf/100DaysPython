@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Create table
-class Moive(db.Model):
+class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
     year = db.Column(db.Integer, nullable=False)
@@ -28,11 +28,12 @@ class Moive(db.Model):
 
     # Allows each movie object to be identified by its title when printed.
     def __repr__(self):
-        return f'<Book {self.title}>'
+        return f'<Movie {self.title}>'
     
 # db.create_all() # This creates a new database, only needs to be run once
 
-# new_movie = newMovie(
+## Adding a new movie manually
+# new_movie = Movie(
 #     title="Phone Booth",
 #     year=2002,
 #     description="Publicist Stuart Shepard finds himself trapped in a phone booth, pinned down by an extortionist's sniper rifle. Unable to leave or receive outside help, Stuart's negotiation with the caller leads to a jaw-dropping climax.",
@@ -41,10 +42,40 @@ class Moive(db.Model):
 #     review="My favourite character was the caller.",
 #     img_url="https://image.tmdb.org/t/p/w500/tjrX2oWRCM3Tvarz38zlZM7Uc10.jpg"
 # )
+# db.session.add(new_movie)
+# db.session.commit()
+
+# Update Movie Form
+class updateMovie(FlaskForm):
+    rating = StringField(label="Your rating out of 10 e.g. 7.5", validators=[DataRequired()])
+    review = StringField(label="Your review", validators=[DataRequired()])
+    submit = SubmitField(label="Done")
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    movies = db.session.query(Movie).all()
+    return render_template("index.html", movieList=movies)
+
+@app.route("/update", methods=["GET", "POST"])
+def edit():
+    movieID = request.args.get("id")
+    movieSelected = Movie.query.get(movieID)
+    form = updateMovie()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            movieSelected.rating = form.rating.data
+            movieSelected.review = form.review.data
+            db.session.commit()
+            return redirect(url_for("home"))
+    return render_template("edit.html", movie=movieSelected, form=form)
+
+@app.route("/delete")
+def delete():
+    movieID = request.args.get('id')
+    movieToDelete = Movie.query.get(movieID)
+    db.session.delete(movieToDelete)
+    db.session.commit()
+    return redirect(url_for("home"))
 
 
 if __name__ == '__main__':
