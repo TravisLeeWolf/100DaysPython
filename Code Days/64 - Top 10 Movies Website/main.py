@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-import requests
+from movie_search import MovieSearch
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -51,6 +51,14 @@ class updateMovie(FlaskForm):
     review = StringField(label="Your review", validators=[DataRequired()])
     submit = SubmitField(label="Done")
 
+# Add Movie Form
+class addMovie(FlaskForm):
+    name = StringField(label="Movie Title", validators=[DataRequired()])
+    submit = SubmitField(label="Add Movie")
+
+# Initiate MovieSearch
+movieSearcher = MovieSearch()
+
 @app.route("/")
 def home():
     movies = db.session.query(Movie).all()
@@ -75,6 +83,22 @@ def delete():
     movieToDelete = Movie.query.get(movieID)
     db.session.delete(movieToDelete)
     db.session.commit()
+    return redirect(url_for("home"))
+
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    form = addMovie()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            movieData = movieSearcher.searchMovie(movieTitle=form.name.data)
+            return render_template("select.html", movieData=movieData)
+    return render_template("add.html", form=form)
+
+@app.route("/details")
+def addToDatabase():
+    movieID = request.args.get('id')
+    print(movieID)
+    movieSearcher.getMovieDetails(movieID)
     return redirect(url_for("home"))
 
 
