@@ -12,7 +12,7 @@ class MovieSearch:
             "include_adult": "false"
         }
         self.movieID = ""
-        self.detailsEndpoint = f"https://api.themoviedb.org/3/movie/{self.movieID}"
+        self.detailsEndpoint = "https://api.themoviedb.org/3/movie/"
 
     def searchMovie(self, movieTitle):
         self.params["query"] = movieTitle
@@ -24,10 +24,11 @@ class MovieSearch:
 
     def getMovieDetails(self, movieID):
         self.movieID = movieID
+        self.detailsEndpoint = self.detailsEndpoint + self.movieID
         params = {
             "api_key": self.apiKey,
             "language": "en-US",
         }
         response = requests.get(url=self.detailsEndpoint, params=params)
         data = response.json()
-        print(data)
+        return data

@@ -21,8 +21,8 @@ class Movie(db.Model):
     title = db.Column(db.String(250), unique=True, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String)
-    rating = db.Column(db.Float, nullable=False)
-    ranking = db.Column(db.Integer, nullable=False)
+    rating = db.Column(db.Float)
+    ranking = db.Column(db.Integer)
     review = db.Column(db.String)
     img_url = db.Column(db.String)
 
@@ -98,7 +98,17 @@ def add():
 def addToDatabase():
     movieID = request.args.get('id')
     print(movieID)
-    movieSearcher.getMovieDetails(movieID)
+    movieData = movieSearcher.getMovieDetails(movieID)
+
+    title = movieData["title"]
+    year = int(movieData["release_date"][:3])
+    description = movieData["overview"]
+    imgURL = f"https://www.themoviedb.org/t/p/original{movieData['poster_path']}"
+
+    newEntry = Movie(title=title, year=year, description=description, img_url=imgURL)
+    db.session.add(newEntry)
+    db.session.commit()
+
     return redirect(url_for("home"))
 
 
