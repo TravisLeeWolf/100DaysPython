@@ -21,8 +21,6 @@ print(logo)
 # List of cards used to play the game
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 
-#TODO - Find code that can be made into repeatable functions
-
 # Player and dealer start with empty hands
 players_hand = []
 dealers_hand = []

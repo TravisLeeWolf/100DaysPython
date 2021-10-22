@@ -16,7 +16,7 @@ lives = 6
 print(day7_HangmanArt.logo)
 
 #Testing code
-print(f'Pssst, the solution is {chosen_word}.')
+# print(f'Pssst, the solution is {chosen_word}.')
 
 #Create blanks
 display = []
