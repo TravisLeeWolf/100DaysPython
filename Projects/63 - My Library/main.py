@@ -55,6 +55,26 @@ def add():
     else:
         return render_template('add.html')
 
+@app.route("/edit", methods=["GET", "POST"])
+def edit():
+    if request.method == "POST":
+        bookID = request.form["id"]
+        book_to_update = Book.query.get(bookID)
+        book_to_update.rating = request.form["rating"]
+        db.session.commit()
+        return redirect(url_for("home"))
+    bookID = request.args.get('id')
+    bookSelected = Book.query.get(bookID)
+    return render_template("edit.html", book=bookSelected)
+
+@app.route("/delete")
+def delete():
+    bookID = request.args.get('id')
+    bookToDelete = Book.query.get(bookID)
+    db.session.delete(bookToDelete)
+    db.session.commit()
+    return redirect(url_for("home"))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
