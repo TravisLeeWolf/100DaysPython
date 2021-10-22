@@ -61,8 +61,13 @@ movieSearcher = MovieSearch()
 
 @app.route("/")
 def home():
-    movies = db.session.query(Movie).all()
-    return render_template("index.html", movieList=movies)
+    # movies = db.session.query(Movie).all()
+    all_movies = Movie.query.order_by(Movie.rating.desc()).all()
+    for i in range(len(all_movies)):
+        all_movies[i].ranking = str(i+1)
+    db.session.commit()
+    
+    return render_template("index.html", movieList=all_movies)
 
 @app.route("/update", methods=["GET", "POST"])
 def edit():
