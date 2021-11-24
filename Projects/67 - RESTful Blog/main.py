@@ -9,6 +9,7 @@ from flask_ckeditor import CKEditor, CKEditorField
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['CKEDITOR_PKG_TYPE'] = 'basic'
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
@@ -34,7 +35,8 @@ class CreatePostForm(FlaskForm):
     subtitle = StringField("Subtitle", validators=[DataRequired()])
     author = StringField("Your Name", validators=[DataRequired()])
     img_url = StringField("Blog Image URL", validators=[DataRequired(), URL()])
-    body = StringField("Blog Content", validators=[DataRequired()])
+    # Using CKEditor for the body
+    body = CKEditorField("Blog Content", validators=[DataRequired()])
     submit = SubmitField("Submit Post")
 
 
@@ -44,15 +46,16 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-@app.route("/post/<int:index>")
-def show_post(index):
-    posts = db.session.query(BlogPost).all()
-    requested_post = None
-    for blog_post in posts:
-        if blog_post.id == index:
-            requested_post = blog_post
+@app.route("/post/<int:post_id>")
+def show_post(post_id):
+    requested_post = BlogPost.query.get(post_id)
     return render_template("post.html", post=requested_post)
 
+
+@app.route("/new-post", methods=["GET", "POST"])
+def createNewPost():
+    form = CreatePostForm()
+    return render_template("make-post.html", form=form)
 
 @app.route("/about")
 def about():
