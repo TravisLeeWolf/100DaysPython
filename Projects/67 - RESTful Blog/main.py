@@ -67,7 +67,37 @@ def createNewPost():
         db.session.commit()
         return redirect(url_for("get_all_posts"))
     form = CreatePostForm()
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, postType="New Post")
+
+
+@app.route("/edit-post/<post_id>", methods=["GET", "POST"])
+def editPost(post_id):
+    currentPost = BlogPost.query.get(post_id)
+    if request.method == "POST":
+        currentPost.title = request.form["title"]
+        currentPost.subtitle = request.form["subtitle"]
+        currentPost.author = request.form["author"]
+        currentPost.img_url = request.form["img_url"]
+        currentPost.body = request.form["body"]
+        db.session.commit()
+        return redirect(url_for("get_all_posts"))
+    form = CreatePostForm(
+        title = currentPost.title,
+        subtitle = currentPost.subtitle,
+        author = currentPost.author,
+        img_url = currentPost.img_url,
+        body = currentPost.body
+    )
+    return render_template("make-post.html", form=form, postType="Edit Post")
+
+@app.route("/delete")
+def deletePost():
+    post_id = request.args.get("post_id")
+    postToDelete = BlogPost.query.get(post_id)
+    db.session.delete(postToDelete)
+    db.session.commit()
+    return redirect(url_for("get_all_posts"))
+
 
 @app.route("/about")
 def about():
@@ -78,8 +108,5 @@ def about():
 def contact():
     return render_template("contact.html")
 
-# if __name__ == "__main__":
-#     app.run(host='0.0.0.0', port=5000)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)

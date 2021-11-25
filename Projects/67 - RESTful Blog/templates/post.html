@@ -28,7 +28,7 @@
           </p>
            <hr>
            <div class="clearfix">
-          <a class="btn btn-primary float-right" href="">Edit Post</a>
+          <a class="btn btn-primary float-right" href="{{ url_for('editPost', post_id=post.id) }}">Edit Post</a>
         </div>
           </div>
       </div>
@@ -37,5 +37,3 @@
 
   <hr>
 {% include "footer.html" %}
-
-<!-- Add to href of edit post: url_for('edit_post', post_id=post.id) -->
