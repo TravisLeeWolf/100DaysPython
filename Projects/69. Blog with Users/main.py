@@ -1,12 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, flash
+from enum import unique
+from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
+from flask_wtf import form
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm
+from wtforms.form import Form
+from forms import CreatePostForm, RegisterForm
 from flask_gravatar import Gravatar
 
 app = Flask(__name__)
@@ -33,6 +36,14 @@ class BlogPost(db.Model):
     img_url = db.Column(db.String(250), nullable=False)
 db.create_all()
 
+class User(UserMixin, db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+db.create_all()
+
 
 @app.route('/')
 def get_all_posts():
@@ -40,9 +51,27 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-@app.route('/register')
+@app.route('/register', methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    form = RegisterForm()
+    if form.validate_on_submit():
+
+        hash_and_salted_password = generate_password_hash(
+            form.password.data,
+            method='pbkdf2:sha256',
+            salt_length=8
+        )
+        new_user = User(
+            email=form.email.data,
+            name=form.name.data,
+            password=hash_and_salted_password,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return redirect(url_for("get_all_posts"))
+
+    return render_template("register.html", form=form)
 
 
 @app.route('/login')
@@ -119,5 +148,8 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=5000)
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
