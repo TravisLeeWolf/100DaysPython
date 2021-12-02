@@ -145,3 +145,4 @@ Code Days/Day 54/testenv/Scripts/python.exe
 Code Days/Day 54/testenv/Scripts/pythonw.exe
 Code Days/71 - Data Exploration w Pandas/salaries_by_college_major.csv
 Code Days/64 - Top 10 Movies Website/static/images/tmdb.svg
+*.csv
